@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style >
+
+        :root {
+            --bg:      #f7f7fb;
+            --ink:     #0f172a;
+            --muted:   #6b7280;
+            --card:    #ffffff;
+            --line:     #e5e7eb;
+            --accent:  #ef4444;
+            --accent-2:#3b82f6;
+
+            --radius:   18px;
+            --shadow:   0 10px 28px rgba(2,6,23,.08);
+
+            --space-1:    6px;
+            --space-2:    10px;
+            --space-3:    14px;
+            --space-4:    20px;
+            --space-5:    28px;
+            --space-6:    40px;
+
+            --frame:      1180px;
+            --rail-w:     120px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg:      #0b1220;
+                --ink:     #e5e7eb;
+                --muted:   #9aa3b2;
+                --card:    #0f172a;
+                --line:    #1f2a44;
+                --shadow:   none;
+            }
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            color: var(--ink);
+            background: var(--bg);
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            color: var(--accent-2);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .wrap {
+            max-width: var(--frame);
+            margin: 40px auto;
+            padding: 0 var(--space-4);
+        }
+
+        .frame {
+            display: grid;
+            grid-template-columns: var(--rail-w) 1fr;
+            gap: var(--space-5);
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .frame {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .rail {
+            position: static;
+            height: fit-content;
+        }
+
+        .rail .year {
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: .8px;
+            margin: 0 0 10px;
+        }
+
+        .rail .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .rail .years {
+            border-left: 2px solid var(--line);
+            padding-left: 14px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .rail a {
+            color: inherit;
+        }
+
+        .rail .links {
+            margin-top: var(--space-5);
+            display: grid;
+            gap: 8px;
+        }
+
+        .rail .links a {
+            font-size: 14px;
+        }
+
+        .rail a.year-link {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            transition: border-color .2s, background-color .2s;
+        }
+
+        .rail a.year-link {
+            border-color: var(--line);
+        }
+
+        .frame:has(#y2025:target)   .rail a[href="y2025"],
+        .frame:has(#y2024:target)   .rail a[href="y2024"],
+        .frame:has(#y2023:target)   .rail a[href="y2023"],
+        .frame:has(#y2022:target)   .rail a[href="y2022"] {
+            background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+            border-color: var(--accent-2);
+        }
+
+        .masthead {
+            background: linear-gradient(135deg,
+               color-mix(in srgb, var(--accent) 10%, #0000),
+               color-mix(in srgb, var(--accent-2) 10%, #0000)), var(--card);
+               border: 1px solid var(--line);
+               border-radius: var(--radius);
+               box-shadow: var(--shadow);
+               overflow: hidden;
+        }
+
+        .mast {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: var(--space-4);
+            padding: var(--space-5);
+            align-items: center;
+        }
+
+        @media (max-width: 720px) {
+            .mast {
+                grid-template-columns: 1fr;
+                text-align: center;justify-items: center;
+            }
+        }
+
+        .avatar {
+            width: 140px;
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(0,0,0,.10);
+        }
+
+         .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+         }
+
+         @media (max-width: 720px) {
+            .avatar {
+                margin: 0 auto var(--space-4);
+            }
+         }
+
+         .title {
+            border-left: 4px solid var(--accent);
+            padding-left: var(--space-4);
+         }
+
+         @media (max-width: 720px) {
+            .title {
+                border-left: 0;
+                padding-left: 0;
+            }
+         }
+
+         .title h1 {
+            margin: 0;
+            font-size: clamp(32px,6vw,48px);
+            line-height: 1.1;
+         }
+
+         .title p {
+            margin: 8px 0 0;
+            font-size: 18px;
+         }
+
+         .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 16px;
+            margin-top: 10px;
+            font-size: 14px;
+         }
+
+         @media (max-width: 720px) {
+            .meta {
+                justify-content: center;
+            }
+         }
+
+         .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--card);
+         }
+
+         .section {
+            margin-top: var(--space-5);
+         }
+
+         .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: var(--space-5);
+         }
+
+         .card h2 {
+            margin: 0 0 12px;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            color: var(--muted);
+         }
+
+         .exp {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-4);
+         }
+
+         @media (max-width: 880px) {
+            .exp {
+                grid-template-columns: 1fr;
+            }
+         }
+
+         .job {
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--line);
+            scroll-margin-top: 90px;
+         }
+
+         .job:last-child {
+            border-bottom: 0;
+         }
+
+         .role {
+            font-weight: 800;
+         }
+
+         .where {
+            color: var(--muted);
+         }
+
+         .when {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: 14px;
+         }
+
+         .lead {
+            font-size: 20px;
+            line-height: 1.7;
+            color: var(--muted);
+            border-left: 4px solid var(--accent-2);
+            padding-left: 14px;
+         }
+
+         .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+         }
+
+         .projects {
+            column-count: 2;
+            column-count: var(--space-4);
+         }
+
+         @media (max-width: 880px) {
+            .projects {
+                column-count: 1;
+            }
+         }
+
+         .proj {
+            break-inside: avoid;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 14px;
+            margin: 0 0 var(--space-4);
+            background: var(--card);
+         }
+
+         .proj h3 {
+            margin: 0 0 6px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            color: var(--muted);
+         }
+
+         @media (max-width: 900px) {
+            .rail {
+                display: none;
+            }
+         }
+
+         @media print {
+            .wrap {
+                margin: 0;
+            }
+
+            .masthead,
+            .card {
+                box-shadow: none;
+            }
+
+            a {
+                color: #000;
+                text-decoration: none;
+            }
+         }
+    </style>
+</head>
+<body>
+    
+    <main class="wrap">
+        <header class="masthead" id="header">
+            <div class="mast">
+                <div class="avatar">
+                    <img src="Images/sas.jpg" alt="Wali al-Din portrait" loading="lazy">
+                </div>
+                <div>
+                    <div class="title">
+                        <h1>Wali al-Din</h1>
+                        <p>Front-End Developer • UI Engineer • Design Systems</p>
+                    </div>
+                    <div class="meta">
+                        <span class="tag">Egypt, Coro</span>
+                        <span class="tag">wlaalldeen@gmail.com</span>
+                        <a class="tag" href="https://medium.com/@wlaalldeen" target="_blank">Medium</a>
+                        <a class="tag" href="https://linkedin.com/in/wali-al-din-mohammed-a1379035b" target="_blank">LinkedIn</a>
+                        <a class="tag" href="https://github.com/wliaal-din-code" target="_blank">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="frame">
+
+            <aside class="rail" aria-label="Year rail + links">
+                <div class="years">
+                    <p class="year"><span class="dot"></span><a class="year-link" href="#y2025">2025</a></p>
+                    <p class="year"><span class="dot"></span><a class="year-link" href="#y2024">2022</a></p>
+                    <p class="year"><span class="dot"></span><a class="year-link" href="#y2023">2023</a></p>
+                    <p class="year"><span class="dot"></span><a class="year-link" href="#y2022">2022</a></p>
+                </div>
+                <div class="links" aria-label="Quick links">
+                    <a href="#about">About</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#education">Education</a>
+                </div>
+            </aside>
+
+            <section aria-label="Contact column">
+
+                <article id="about" class="section card" aria-labelledby="about-title">
+                    <h2 id="about-title">About</h2>
+                    <p class="lead">Impact-driven builder of fast, accessible UIs. I care about design tokens, clean semantics,
+                       and performance budgets. I enjoy mentoring and teaching front-end fundamentals to help teams move quickly
+                       with quality.</p>
+                </article>
+
+                <article class="section card" aria-labelledby="exp-title">
+                    <h2 id="exp-title">Experience</h2>
+
+                    <div class="exp">
+                        <div class="jop" id="y2025" aria-labelledby="y2025-title">
+                            <div style="display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;">
+                                <div class="role" id="y2025-title">Lead Front-End Engineer</div>
+                                <div class="where">Atlas Systems • Amman</div>
+                                <div class="when">2025</div>
+                            </div>
+                            <ul class="muted">
+                                <li>Shipped a design-token pipeline (Style Dictionary) that unified 3 products; reduced CSS drift by
+                                  40%.</li>
+                                  <li>Migrated legacy CSS to CSS Grid/Flex patterns; cut layout bugs across viewports by ~60%.</li>
+                                  <li>hampioned performance budgets; improved median LCP from 3.3s → 2.2s on mid-range devices.</li>
+                            </ul>
+                            <p><a href="#about">↑ Back to top</a></p>
+                        </div>
+
+                        <div class="job" id="y2024" aria-labelledby="y2024-title">
+                            <div style="display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;">
+                                <div class="role" id="y2024-title">Senior Front-End Developer</div>
+                                <div class="where">ech Co • Egypt</div>
+                                <div class="when">2023 - 2024</div>
+                            </div>
+                            <ul class="muted">
+                                <li>Built an internal component library; trimmed CSS bundle by 30% using tokens and utility classes.
+                                </li>
+                                <li>Led a11y upgrades to WCAG 2.1 AA; authored checklists and example PRs for the team.</li>
+                                <li>Partnered with Design to improve Figma → code handoff; reduced rework and improved consistency.</li>
+                            </ul>
+                            <p><a href="#about">↑ Back to top</a></p>
+                        </div>
+
+                        <div class="job" id="y2023" aria-labelledby="y2023-title">
+                            <div style="display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;">
+                                <div class="role" id="y2023">Web Designer</div>
+                                <div class="where">Creative Studio • Remote</div>
+                                <div class="when">2020 - 2023</div>
+                            </div>
+                            <ul class="muted">
+                                <li>Prototyped and shipped 12 marketing sites with modern CSS; introduced shared brand tokens.</li>
+                                <li>Delivered semantic HTML/CSS handoffs that accelerated dev sprints by ~20%.</li>
+                            </ul>
+                            <p><a href="#about">↑ Back to top</a></p>
+                        </div>
+
+                        <div class="job" id="y2022" aria-labelledby="y2022-title">
+                            <div style="display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;">
+                                <div class="role" id="y2022-title">Volunteer Mentor</div>
+                                <div class="where">Local Coding Club</div>
+                                <div class="when">2022 - Present</div>
+                            </div>
+                            <ul class="muted">
+                                <li>Weekly workshops helping beginners ship their first pages using semantic HTML and modern CSS.</li>
+                                <li>Reviewed student projects; introduced accessible patterns and responsive techniques.</li>
+                            </ul>
+                            <p><a href="#about">↑ Back to top</a></p>
+                        </div>
+                    </div>
+                </article>
+
+                <article id="skills" class="section card" aria-labelledby="skills-title">
+                    <h2 id="skills-title">Skills & Tools</h2>
+                    <div class="skills">
+                        <span class="tag">Semantic HTML</span>
+                        <span class="tag">SS Grid & Flexbox</span>
+                        <span class="tag">Accessibility (WCAG)</span>
+                        <span class="tag">Design Tokens</span>
+                        <span class="tag">Git & GitHub</span>
+                        <span class="tag">Figma</span>
+                        <span class="tag">Chrome DevTools</span>
+                    </div>
+                </article>
+
+                <article id="projects" class="section card" aria-labelledby="proj-title">
+                    <h2 id="proj-title">Selected Projects</h2>
+                    <div class="projects">
+                        <div class="proj">
+                            <h3>Portfolio Website</h3>
+                            <p class="muted">Static site scoring 95+ on Lighthouse Performance; optimized fonts & images; CI/CD
+                             previews for PRs.</p>
+                        </div>
+                        <div class="proj">
+                            <h3>Design System Demo</h3>
+                            <p class="muted">Token-based theming with CSS variables; documented components with usage guidelines.</p>
+                        </div>
+                        <div class="proj">
+                            <h3>Perf Budgets Kit</h3>
+                            <p class="muted">Starter budgets, bundle limits, and checklists to keep teams honest as products scale.</p>
+                        </div>
+                        <div class="proj">
+                            <h3>A11y Audit Toolkit</h3>
+                            <p class="muted">Keyboard flows, color contrast testing, and heuristics to drive WCAG 2.1 AA improvements.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article id="education" class="section card">
+                    <h2>Education</h2>
+                    <div class="edu-list">
+                        <div class="edu-itme">
+                            <div class="edu-header">
+                                <h3 class="edu-degree">B.Sc. Computer Science</h3>
+                                <span class="edu-years">2016 - 2020</span>
+                            </div>
+                            <div class="edu-institution">University Name</div>
+                            <p class="edu-highlights muted">
+                                Graduated with Honors. Focused on software engineering, data structures, and algorithms.
+                            </p>
+                        </div>
+
+                        <div class="edu-itme">
+                            <div class="edu-header">
+                                <h3 class="edu-degree">M.Sc. Information Technology</h3>
+                                <span class="edu-years">2021 - 2023</span>
+                            </div>
+                            <div class="edu-institution">Tech Institute</div>
+                            <p class="edu-highlights">
+                                Specialized in cloud computing and modern web application development.
+                            </p>
+                        </div>
+
+                        <div class="edu-itme">
+                            <div class="edu-header">
+                                <h3 class="edu-degree">Front-End Web Development Certification</h3>
+                                <span class="edu-years">2023</span>
+                            </div>
+                            <div class="edu-institution">Online Academy</div>
+                            <p>
+                                Completed intensive bootcamp covering HTML5, CSS3, JavaScript, and React.
+                            </p>
+
+                            <a href="#header">Back to Header</a>
+                        </div>
+
+                    </div>
+                </article>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
